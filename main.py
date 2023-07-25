@@ -5,7 +5,7 @@ import sys
 import random
 import time
 from move_player import move_player
-from map import map1
+from map1 import map1
 
 
 def main():
