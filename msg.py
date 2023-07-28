@@ -69,7 +69,7 @@ def menu(bg):
                     para.move_delay = pygame.time.get_ticks() + para.move_delay_time
                     break
         
-        if key[pygame.K_ESCAPE] == 1:
+        if key[pygame.K_TAB] == 1:
             if not para.is_move:
                 para.is_move = True
                 para.move_delay = pygame.time.get_ticks() + para.move_delay_time

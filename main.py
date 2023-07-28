@@ -50,7 +50,13 @@ def main():
         key = pygame.key.get_pressed()
 
         if key[pygame.K_TAB] == 1:
-            menu(screen)
+            if not para.is_move:
+                para.is_move = True
+                para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                menu(screen)
+
+        if para.is_move and pygame.time.get_ticks() > para.move_delay:
+            para.is_move = False
 
         move_player(para.pl_y,para.pl_x)
         clock.tick(30)
