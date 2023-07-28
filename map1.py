@@ -12,7 +12,7 @@ font = pygame.font.Font('ipaexg00401/ipaexg.ttf', 20)
 hana = pygame.image.load("image/maptile_sogen_hana.png")
 floor = pygame.image.load("image/floor.png")
 desk = pygame.image.load("image/floor_desk.png")
-cea = pygame.image.load("image/cea.png")
+cea = pygame.image.load("image/cea_map1.png")
 wall = pygame.image.load("image/wall.png")
 bridge_tate = pygame.image.load("image/bridge_brown.png")
 bridge_yoko = pygame.image.load("image/bridge_brown_yoko.png")
@@ -32,9 +32,14 @@ def map1(bg):
 
     from dateclass import para
 
-    for h in range(32):
+    para.mapdate = []
+
+    for i in range(32):
+        para.mapdate.append([0]*32)
+
+    '''for h in range(32):
         for w in range(32):
-            para.mapdate[h][w] = 0
+            para.mapdate[h][w] = 0'''
     
     '''0 = hana
        1 = door_left
@@ -113,8 +118,13 @@ def map1(bg):
                 if 14 <=  j <= 16:
                     para.mapdate[i][j] = 4
     #正面門
-    para.mapdate[30][14],para.mapdate[30][15] = 1,2
+    para.mapdate[30][14],para.mapdate[30][15],para.mapdate[30][16] = 1,2,2
             
+def back_map1(bg):
+
+    bg.fill(black)
+
+    from dateclass import para    
 
     for y in range(-12,12):
         for x in range(-12,12):
@@ -157,165 +167,358 @@ def map1(bg):
                             bg.blit(yuusya_down,[X,Y])
                         elif para.direction == 3:
                             bg.blit(yuusya_left,[X,Y])
-    if para.pl_y == 23 and para.pl_x == 7 and para.direction == 3:
-        
-        key = pygame.key.get_pressed()
+    
+    key = pygame.key.get_pressed()
 
-        if key[pygame.K_SPACE] == 1:
-            talk_merchant01(bg)
+    if para.pl_y == 23 and para.pl_x == 7 and para.direction == 3:
+
+        if key[pygame.K_f] == 1:
+            if not para.is_move:
+                para.is_move = True
+                para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                talk_merchant01(bg)
 
     if para.pl_y == 25 and para.pl_x == 7 and para.direction == 3:
-        
-        key = pygame.key.get_pressed()
 
-        if key[pygame.K_SPACE] == 1:
-            talk_merchant02(bg)
+        if key[pygame.K_f] == 1:
+            if not para.is_move:
+                para.is_move = True
+                para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                talk_merchant02(bg)
 
     if para.pl_y == 24 and para.pl_x == 23 and para.direction == 1:
-        
-        key = pygame.key.get_pressed()
 
-        if key[pygame.K_SPACE] == 1:
-            talk_hotelman(bg)
+        if key[pygame.K_f] == 1:
+            if not para.is_move:
+                para.is_move = True
+                para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                talk_hotelman(bg)
+    
+    if para.pl_y == 10 and para.pl_x == 15 and para.direction == 0:
+
+        if key[pygame.K_f] == 1:
+            if not para.is_move:
+                para.is_move = True
+                para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                talk_client(bg)
+
+    if para.is_move and pygame.time.get_ticks() > para.move_delay:
+        para.is_move = False
         
     pygame.display.update()
 
 def talk_merchant01(bg):
         
-        from dateclass import para
-        point = 0
-        while True:
+    from dateclass import para
+    point = 0
+    while True:
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                    
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        pygame.quit()
-                        sys.exit()
-                
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_w:
-                        if point >= 1:
-                            point -= 1
-
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_s:
-                        if point < 11:
-                            point += 1       
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
             
-            key = pygame.key.get_pressed()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_w:
+                    if point >= 1:
+                        point -= 1
 
-            if key[pygame.K_e] == 1:
-                if point == 11:
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_s:
+                    if point < 11:
+                        point += 1       
+        
+        key = pygame.key.get_pressed()
+
+        if key[pygame.K_f] == 1:
+            if point == 11:
+                if not para.is_move:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
                     break
             
-            #pygame.draw.rect(bg,black,(0,40,300,300),border_radius = 5)
-            bg.fill(black,(0,40,300,290))
-            pygame.draw.rect(bg,white,(0,40,300,290),width = 5,border_radius = 5)
-            text = font.render('    薬草       5 G', True,white)
-            bg.blit(text,(5,50))
-            text = font.render('    魔法草     8 G', True,white)
-            bg.blit(text,(5,73))
-            text = font.render('買い物を終了する', True,white)
-            bg.blit(text,(5,302))
-            now = 49+point*23
-            pygame.draw.rect(bg,white,(5,now,290,23),width = 1,border_radius = 5)           
+            if point == 0:
+                if not para.is_move:
+                    if para.money >= 5:
+                        para.is_move = True
+                        para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                        para.bag_item["薬草"] += 1
+                        para.money -= 5
 
-            pygame.display.update()
+            if point == 1:
+                if not para.is_move:
+                    if para.money >= 8:
+                        para.is_move = True
+                        para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                        para.bag_item["魔法草"] += 1
+                        para.money -= 8
+
+        if key[pygame.K_ESCAPE] == 1:
+            if not para.is_move:
+                para.is_move = True
+                para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                break
+
+        if para.is_move and pygame.time.get_ticks() > para.move_delay:
+            para.is_move = False
+        
+        #pygame.draw.rect(bg,black,(0,40,300,300),border_radius = 5)
+        bg.fill(black,(0,40,300,290))
+        pygame.draw.rect(bg,white,(0,40,300,290),width = 5,border_radius = 5)
+        text = font.render('    薬草       5 G', True,white)
+        bg.blit(text,(5,50))
+        text = font.render('    魔法草     8 G', True,white)
+        bg.blit(text,(5,73))
+        text = font.render('買い物を終了する', True,white)
+        bg.blit(text,(5,302))
+        now = 49+point*23
+        pygame.draw.rect(bg,white,(5,now,290,23),width = 1,border_radius = 5)           
+
+        draw_status(bg)
+
+        pygame.display.update()
 
 def talk_merchant02(bg):
         
-        from dateclass import para
-        point = 0
-        while True:
+    from dateclass import para
+    point = 0
+    while True:
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                    
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        pygame.quit()
-                        sys.exit()
-                
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_w:
-                        if point >= 1:
-                            point -= 1
-
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_s:
-                        if point < 11:
-                            point += 1       
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
             
-            key = pygame.key.get_pressed()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_w:
+                    if point >= 1:
+                        point -= 1
 
-            if key[pygame.K_e] == 1:
-                if point == 11:
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_s:
+                    if point < 11:
+                        point += 1       
+        
+        key = pygame.key.get_pressed()
+
+        if key[pygame.K_f] == 1:
+            if point == 11:
+                if not para.is_move:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
                     break
-            
-            #pygame.draw.rect(bg,black,(0,40,300,300),border_radius = 5)
-            bg.fill(black,(0,40,300,290))
-            pygame.draw.rect(bg,white,(0,40,300,290),width = 5,border_radius = 5)
-            text = font.render('    木刀     10 G', True,white)
-            bg.blit(text,(5,50))
-            text = font.render('    鋼の剣     15 G', True,white)
-            bg.blit(text,(5,73))
-            text = font.render('    木の盾     10 G', True,white)
-            bg.blit(text,(5,96))
-            text = font.render('    銅の盾     15 G', True,white)
-            bg.blit(text,(5,119))
-            text = font.render('買い物を終了する', True,white)
-            bg.blit(text,(5,302))
-            now = 49+point*23
-            pygame.draw.rect(bg,white,(5,now,290,23),width = 1,border_radius = 5)           
 
-            pygame.display.update()
+            if point == 0:
+                if not para.is_move:
+                    if para.money >= 10:
+                        para.is_move = True
+                        para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                        para.bag_equip["木刀"] += 1
+                        para.money -= 10
+
+            if point == 1:
+                if not para.is_move:
+                    if para.money >= 15:
+                        para.is_move = True
+                        para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                        para.bag_equip["鋼の剣"] += 1
+                        para.money -= 15
+
+            if point == 2:
+                if not para.is_move:
+                    if para.money >= 10:
+                        para.is_move = True
+                        para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                        para.bag_equip["木の盾"] += 1
+                        para.money -= 10
+
+            if point == 3:
+                if not para.is_move:
+                    if para.money >= 15:
+                        para.is_move = True
+                        para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                        para.bag_equip["銅の盾"] += 1
+                        para.money -= 15
+        
+        if key[pygame.K_ESCAPE] == 1:
+            if not para.is_move:
+                para.is_move = True
+                para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                break
+
+        if para.is_move and pygame.time.get_ticks() > para.move_delay:
+            para.is_move = False
+        
+        #pygame.draw.rect(bg,black,(0,40,300,300),border_radius = 5)
+        bg.fill(black,(0,40,300,290))
+        pygame.draw.rect(bg,white,(0,40,300,290),width = 5,border_radius = 5)
+        text = font.render('    木刀     10 G', True,white)
+        bg.blit(text,(5,50))
+        text = font.render('    鋼の剣     15 G', True,white)
+        bg.blit(text,(5,73))
+        text = font.render('    木の盾     10 G', True,white)
+        bg.blit(text,(5,96))
+        text = font.render('    銅の盾     15 G', True,white)
+        bg.blit(text,(5,119))
+        text = font.render('買い物を終了する', True,white)
+        bg.blit(text,(5,302))
+        now = 49+point*23
+        pygame.draw.rect(bg,white,(5,now,290,23),width = 1,border_radius = 5)           
+
+        draw_status(bg)
+
+        pygame.display.update()
 
 def talk_hotelman(bg):
         
-        from dateclass import para
-        point = 0
-        while True:
+    from dateclass import para
+    point = 0
+    while True:
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                    
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        pygame.quit()
-                        sys.exit()
-                
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_w:
-                        if point >= 1:
-                            point -= 1
-
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_s:
-                        if point < 1:
-                            point += 1       
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
             
-            key = pygame.key.get_pressed()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_w:
+                    if point == 1:
+                        point = 0
 
-            if key[pygame.K_e] == 1:
-                if point == 1:
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_s:
+                    if point == 0:
+                        point = 1       
+        
+        key = pygame.key.get_pressed()
+
+        if key[pygame.K_f] == 1:
+            if point == 0:
+                if not para.is_move:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    para.hp = para.max_hp
+                    para.mp = para.max_mp
+                    para.money -= 10
                     break
-            
-            #pygame.draw.rect(bg,black,(0,40,300,300),border_radius = 5)
-            bg.fill(black,(0,40,300,62))
-            pygame.draw.rect(bg,white,(0,40,300,62),width = 5,border_radius = 5)
-            text = font.render('泊まっていく', True,white)
-            bg.blit(text,(5,50))
-            text = font.render('やめる', True,white)
-            bg.blit(text,(5,73))
-            now = 49+point*23
-            pygame.draw.rect(bg,white,(5,now,290,23),width = 1,border_radius = 5)           
 
-            pygame.display.update()
+        if key[pygame.K_f] == 1:
+            if point == 1:
+                if not para.is_move:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    break
+
+        if key[pygame.K_ESCAPE] == 1:
+            if not para.is_move:
+                para.is_move = True
+                para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                break
+
+        if para.is_move and pygame.time.get_ticks() > para.move_delay:
+            para.is_move = False
+        
+        #pygame.draw.rect(bg,black,(0,40,300,300),border_radius = 5)
+        bg.fill(black,(0,40,300,62))
+        pygame.draw.rect(bg,white,(0,40,300,62),width = 5,border_radius = 5)
+        text = font.render('泊まっていく  10 G', True,white)
+        bg.blit(text,(5,50))
+        text = font.render('やめる', True,white)
+        bg.blit(text,(5,73))
+        now = 49+point*23
+        pygame.draw.rect(bg,white,(5,now,290,23),width = 1,border_radius = 5)           
+
+        draw_status(bg)
+
+        pygame.display.update()
+
+def talk_client(bg):
+    
+    from dateclass import para
+    point = 0
+    while True:
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_w:
+                    if point >= 1:
+                        point -= 1
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_s:
+                    if point < 11:
+                        point += 1       
+        
+        key = pygame.key.get_pressed()
+
+        if key[pygame.K_f] == 1:
+            if point == 11:
+                if not para.is_move:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    break
+
+        if key[pygame.K_ESCAPE] == 1:
+            if not para.is_move:
+                para.is_move = True
+                para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                break
+
+        if para.is_move and pygame.time.get_ticks() > para.move_delay:
+            para.is_move = False
+        
+        #pygame.draw.rect(bg,black,(0,40,300,300),border_radius = 5)
+        bg.fill(black,(0,40,300,290))
+        pygame.draw.rect(bg,white,(0,40,300,290),width = 5,border_radius = 5)
+        text = font.render('クエスト No1', True,white)
+        bg.blit(text,(5,50))
+        text = font.render('クエスト No2', True,white)
+        bg.blit(text,(5,73))
+        text = font.render('クエスト No3', True,white)
+        bg.blit(text,(5,96))
+        text = font.render('やめる', True,white)
+        bg.blit(text,(5,302))
+        now = 49+point*23
+        pygame.draw.rect(bg,white,(5,now,290,23),width = 1,border_radius = 5)
+
+        draw_status(bg)
+
+        pygame.display.update()
+
+def draw_status(bg):
+        
+        from dateclass import para
+
+        #メニュー　ステータス
+        bg.fill(black,(0,330,300,290))
+        pygame.draw.rect(bg,white,(0,330,300,290),width = 5,border_radius = 5)
+        
+        #hp
+        pygame.draw.rect(bg,(255,138,197),(20,350,100,10)) #ピンク
+        nowhp_rate = (para.hp/para.max_hp)*100
+        pygame.draw.rect(bg,(0,208,0),(20,350,nowhp_rate,10)) #緑
+        text = font.render("HP  {} / {}".format(para.hp,para.max_hp),True,white)
+        bg.blit(text,(150,347))
+        
+        #mp
+        pygame.draw.rect(bg,(142,219,255),(20,380,100,10)) #水色
+        nowmp_rate = (para.mp/para.max_mp)*100
+        pygame.draw.rect(bg,(5,69,255),(20,380,nowmp_rate,10)) #青色
+        text = font.render("MP  {} / {}".format(para.mp,para.max_mp),True,white)
+        bg.blit(text,(150,377))
+
+        #攻撃力
+        text = font.render("攻撃力  {}".format(para.attack),True,white)
+        bg.blit(text,(50,410))
+
+        #防御力
+        text = font.render("防御力  {}".format(para.deffence),True,white)
+        bg.blit(text,(50,450))
+
+        #所持金
+        text = font.render("所持金  {} G".format(para.money),True,white)
+        bg.blit(text,(50,490))
