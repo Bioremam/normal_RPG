@@ -7,6 +7,7 @@ import sys
 pygame.init()
 black = (0,0,0)
 white = (255,255,255)
+yellow = (255,248,64)
 font = pygame.font.Font('ipaexg00401/ipaexg.ttf', 20)
 
 hana = pygame.image.load("image/maptile_sogen_hana.png")
@@ -314,6 +315,8 @@ def talk_merchant02(bg):
                         para.is_move = True
                         para.move_delay = pygame.time.get_ticks() + para.move_delay_time
                         para.bag_equip["木刀"] += 1
+                        para.equip_status["木刀"][0] = 0
+                        para.equip_status["木刀"][1] = 5
                         para.money -= 10
 
             if point == 1:
@@ -322,6 +325,8 @@ def talk_merchant02(bg):
                         para.is_move = True
                         para.move_delay = pygame.time.get_ticks() + para.move_delay_time
                         para.bag_equip["鋼の剣"] += 1
+                        para.equip_status["鋼の剣"][0] = 0
+                        para.equip_status["鋼の剣"][1] = 10
                         para.money -= 15
 
             if point == 2:
@@ -330,6 +335,8 @@ def talk_merchant02(bg):
                         para.is_move = True
                         para.move_delay = pygame.time.get_ticks() + para.move_delay_time
                         para.bag_equip["木の盾"] += 1
+                        para.equip_status["木の盾"][0] = 1
+                        para.equip_status["木の盾"][1] = 5
                         para.money -= 10
 
             if point == 3:
@@ -338,6 +345,8 @@ def talk_merchant02(bg):
                         para.is_move = True
                         para.move_delay = pygame.time.get_ticks() + para.move_delay_time
                         para.bag_equip["銅の盾"] += 1
+                        para.equip_status["銅の盾"][0] = 1
+                        para.equip_status["銅の盾"][1] = 10
                         para.money -= 15
         
         if key[pygame.K_ESCAPE] == 1:
@@ -349,23 +358,35 @@ def talk_merchant02(bg):
         if para.is_move and pygame.time.get_ticks() > para.move_delay:
             para.is_move = False
         
+        draw_status(bg)
+        
         #pygame.draw.rect(bg,black,(0,40,300,300),border_radius = 5)
         bg.fill(black,(0,40,300,290))
         pygame.draw.rect(bg,white,(0,40,300,290),width = 5,border_radius = 5)
         text = font.render('    木刀     10 G', True,white)
         bg.blit(text,(5,50))
+        if point == 0:
+            text = font.render("+ 5",True,yellow)
+            bg.blit(text,(180,410))
         text = font.render('    鋼の剣     15 G', True,white)
         bg.blit(text,(5,73))
+        if point == 1:
+            text = font.render("+ 10",True,yellow)
+            bg.blit(text,(180,410))
         text = font.render('    木の盾     10 G', True,white)
         bg.blit(text,(5,96))
+        if point == 2:
+            text = font.render("+ 5",True,yellow)
+            bg.blit(text,(180,450))
         text = font.render('    銅の盾     15 G', True,white)
         bg.blit(text,(5,119))
+        if point == 3:
+            text = font.render("+ 10",True,yellow)
+            bg.blit(text,(180,450))
         text = font.render('買い物を終了する', True,white)
         bg.blit(text,(5,302))
         now = 49+point*23
         pygame.draw.rect(bg,white,(5,now,290,23),width = 1,border_radius = 5)           
-
-        draw_status(bg)
 
         pygame.display.update()
 

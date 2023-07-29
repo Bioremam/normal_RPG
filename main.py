@@ -59,7 +59,7 @@ def main():
             para.is_move = False
 
         move_player(para.pl_y,para.pl_x)
-        clock.tick(30)
+        clock.tick(60)
         
 if __name__ == '__main__':
     main()

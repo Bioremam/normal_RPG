@@ -38,7 +38,7 @@ def menu(bg):
             show_item(bg)
             if key[pygame.K_f] == 1:
                 if not para.is_move:
-                    if len(para.bag_equip) != 0:
+                    if len(para.bag_item) != 0:
                         para.is_move = True
                         para.move_delay = pygame.time.get_ticks() + para.move_delay_time
                         item(bg)
@@ -162,9 +162,16 @@ def item(bg):
                     para.move_delay = pygame.time.get_ticks() + para.move_delay_time
                     pygame.display.update()
                     break
+                
                 if point == 0:
                     para.is_move = True
                     para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    use_yakusou(bg)
+                
+                if point == 1:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    use_mahousou(bg)
 
         if key[pygame.K_ESCAPE] == 1:
             if not para.is_move:
@@ -186,9 +193,9 @@ def item(bg):
         text = font.render('     魔法草',True,white)
         bg.blit(text,(305,73))
         text = font.render('     閉じる',True,white)
-        bg.blit(text,(305,302))
+        bg.blit(text,(305,302))'''
         now = 49+point*23
-        pygame.draw.rect(bg,white,(305,now,290,23),width = 1,border_radius = 5)'''
+        pygame.draw.rect(bg,white,(305,now,290,23),width = 1,border_radius = 5)
 
         pygame.display.update()
 
@@ -226,6 +233,19 @@ def equip(bg):
                 if point == 0:
                     para.is_move = True
                     para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    use_equip(bg,point)
+                if point == 1:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    use_equip(bg,point)
+                if point == 2:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    use_equip(bg,point)
+                if point == 3:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    use_equip(bg,point)
 
         if key[pygame.K_ESCAPE] == 1:
             if not para.is_move:
@@ -246,9 +266,9 @@ def equip(bg):
         text = font.render('     装備2', True,white)
         bg.blit(text,(305,73))
         text = font.render('     閉じる', True,white)
-        bg.blit(text,(305,302))
+        bg.blit(text,(305,302))'''
         now = 49+point*23
-        pygame.draw.rect(bg,white,(305,now,290,23),width = 1,border_radius = 5)'''           
+        pygame.draw.rect(bg,white,(305,now,290,23),width = 1,border_radius = 5)
 
         pygame.display.update()
 
@@ -395,3 +415,62 @@ def draw_bag_equip(bg):
         text = font.render('{}               {} 個'.format(key,para.bag_equip[key]),True,white)
         bg.blit(text,(305,50+point*23))
         point += 1
+
+def use_yakusou(bg):
+
+    from dateclass import para
+
+    if para.bag_item["薬草"] > 0:
+        if para.hp + 5 <= para.max_hp:
+            para.hp += 5
+        else:
+            para.hp = para.max_hp
+        para.bag_item["薬草"] -= 1
+
+def use_mahousou(bg):
+
+    from dateclass import para
+
+    if para.bag_item["魔法草"] > 0:
+        if para.mp + 5 <= para.max_mp:
+            para.mp += 5
+        else:
+            para.mp = para.max_mp
+        para.bag_item["魔法草"] -= 1
+
+def use_equip(bg,point):
+
+    check = 0
+
+    from dateclass import para
+
+    for i in list(para.equip_status.keys()):
+        if check == point:
+            if para.equip_status[i][0] == 0:
+                if para.weapon[0] == 0:
+                    para.weapon[0] = 1
+                    para.weapon[1] = i
+                    para.bag_equip[i] -= 1
+                    para.attack += para.equip_status[i][1]
+                else:
+                    para.attack -= para.equip_status[para.weapon[1]][1]
+                    para.bag_equip[para.weapon[1]] += 1
+                    para.weapon[1] = i
+                    para.bag_equip[i] -= 1
+                    para.attack += para.equip_status[i][1]                    
+            elif para.equip_status[i][0] == 1:
+                if para.armor[0] == 0:
+                    para.armor[0] = 1
+                    para.armor[1] = i
+                    para.bag_equip[i] -= 1
+                    para.deffence += para.equip_status[i][1]
+                else:
+                    para.deffence -= para.equip_status[para.armor[1]][1]
+                    para.bag_equip[para.armor[1]] += 1
+                    para.armor[1] = i
+                    para.bag_equip[i] -= 1
+                    para.deffence += para.equip_status[i][1]
+            break
+        else:
+            check += 1
+            continue
