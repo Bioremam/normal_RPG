@@ -5,6 +5,7 @@ import sys
 import random
 import time
 from move_player import move_player
+from start_menu import start_menu
 from map1 import map1,back_map1
 from map2 import map2,back_map2
 from msg import menu,exit_town,enter_town
@@ -16,6 +17,8 @@ def main():
     screen = pygame.display.set_mode((720,720))
     clock = pygame.time.Clock()
     from dateclass import para
+
+    para.map = 0
     
     while True:
 
@@ -28,8 +31,11 @@ def main():
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
+        
+        if para.map == 0:
+            start_menu(screen)
 
-        if para.map == 10:
+        elif para.map == 10:
             map1(screen)
             para.map = 11
         elif para.map == 11:
@@ -59,6 +65,7 @@ def main():
             para.is_move = False
 
         move_player(para.pl_y,para.pl_x)
+        
         clock.tick(60)
         
 if __name__ == '__main__':
