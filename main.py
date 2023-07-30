@@ -64,7 +64,7 @@ def main():
         if para.is_move and pygame.time.get_ticks() > para.move_delay:
             para.is_move = False
 
-        move_player(para.pl_y,para.pl_x)
+        move_player(para.pl_y,para.pl_x,screen)
         
         clock.tick(60)
         

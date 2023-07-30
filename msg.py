@@ -166,12 +166,12 @@ def item(bg):
                 if point == 0:
                     para.is_move = True
                     para.move_delay = pygame.time.get_ticks() + para.move_delay_time
-                    use_yakusou(bg)
+                    use_item(bg,point)
                 
                 if point == 1:
                     para.is_move = True
                     para.move_delay = pygame.time.get_ticks() + para.move_delay_time
-                    use_mahousou(bg)
+                    use_item(bg,point)
 
         if key[pygame.K_ESCAPE] == 1:
             if not para.is_move:
@@ -306,6 +306,9 @@ def draw_status(bg):
         text = font.render("所持金  {} G".format(para.money),True,white)
         bg.blit(text,(50,490))
 
+        text = font.render("Lv.   {}".format(para.lv),True,white)
+        bg.blit(text,(50,530))
+
 def exit_town(bg):
 
     from dateclass import para
@@ -437,6 +440,35 @@ def use_mahousou(bg):
         else:
             para.mp = para.max_mp
         para.bag_item["魔法草"] -= 1
+
+def use_item(bg,point):
+
+    check = 0
+
+    from dateclass import para
+
+    for i in list(para.bag_item.keys()):
+        if check == point:
+            if i == "薬草":
+                if para.bag_item[i] >= 1:
+                    if para.hp + 10 <= para.max_hp:
+                        para.hp += 10
+                        para.bag_item[i] -= 1
+                    else:
+                        para.hp = para.max_hp
+                        para.bag_item[i] -= 1
+            if i == "魔法草":
+                if para.bag_item[i] >= 1:
+                    if para.mp + 5 <= para.max_mp:
+                        para.mp += 5
+                        para.bag_item[i] -= 1
+                    else:
+                        para.mp = para.max_mp
+                        para.bag_item[i] -= 1
+            break
+        else:
+            check += 1
+            continue
 
 def use_equip(bg,point):
 

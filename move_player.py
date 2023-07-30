@@ -1,8 +1,10 @@
 from os import environ
 environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 import pygame
+import random
+from battle import battle_scene
 
-def move_player(y,x): # 主人公の移動
+def move_player(y,x,bg): # 主人公の移動
     
     from dateclass import para
     
@@ -16,7 +18,10 @@ def move_player(y,x): # 主人公の移動
 
                 para.is_move = True
                 para.move_delay = pygame.time.get_ticks() + para.move_delay_time
-                print(para.pl_y,para.pl_x)
+                d = random.randint(0,200)
+                if d <= 10:
+                    battle_scene(bg)
+                #print(para.pl_y,para.pl_x)
 
     if  key[pygame.K_s] == 1:
         para.direction = 2
@@ -26,7 +31,10 @@ def move_player(y,x): # 主人公の移動
 
                 para.is_move = True
                 para.move_delay = pygame.time.get_ticks() + para.move_delay_time
-                print(para.pl_y,para.pl_x)
+                d = random.randint(0,200)
+                if d <= 10:
+                    battle_scene(bg)
+                #print(para.pl_y,para.pl_x)
 
     if  key[pygame.K_a] == 1:
         para.direction = 3
@@ -36,7 +44,10 @@ def move_player(y,x): # 主人公の移動
 
                 para.is_move = True
                 para.move_delay = pygame.time.get_ticks() + para.move_delay_time
-                print(para.pl_y,para.pl_x)
+                d = random.randint(0,200)
+                if d <= 10:
+                    battle_scene(bg)
+                #print(para.pl_y,para.pl_x)
 
     if key[pygame.K_d] == 1:
         para.direction = 1
@@ -46,7 +57,10 @@ def move_player(y,x): # 主人公の移動
 
                 para.is_move = True
                 para.move_delay = pygame.time.get_ticks() + para.move_delay_time
-                print(para.pl_y,para.pl_x)
+                d = random.randint(0,200)
+                if d <= 10:
+                    battle_scene(bg)
+                #print(para.pl_y,para.pl_x)
     
     if para.is_move and pygame.time.get_ticks() > para.move_delay:
         para.is_move = False
