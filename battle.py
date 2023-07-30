@@ -11,6 +11,7 @@ white = (255,255,255)
 message = [""]*10
 font = pygame.font.Font('ipaexg00401/ipaexg.ttf', 20)
 backimg = pygame.image.load("backimg/battle_map1.jpg")
+slime = pygame.image.load("image/slime.png")
 
 def init_message():
     for i in range(10):
@@ -201,6 +202,7 @@ def battle_scene(bg):
         draw_status_inbattle(bg)
         draw_skill_back(bg)
         after_battle_msg(bg)
+        bg.blit(slime,[400,200])
 
         my_at = para.attack+random.randint(30,50)
         

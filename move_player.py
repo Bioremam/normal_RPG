@@ -18,9 +18,10 @@ def move_player(y,x,bg): # 主人公の移動
 
                 para.is_move = True
                 para.move_delay = pygame.time.get_ticks() + para.move_delay_time
-                d = random.randint(0,200)
-                if d <= 10:
-                    battle_scene(bg)
+                if para.map == 21:
+                    d = random.randint(0,200)
+                    if d <= 10:
+                        battle_scene(bg)
                 #print(para.pl_y,para.pl_x)
 
     if  key[pygame.K_s] == 1:
@@ -31,9 +32,10 @@ def move_player(y,x,bg): # 主人公の移動
 
                 para.is_move = True
                 para.move_delay = pygame.time.get_ticks() + para.move_delay_time
-                d = random.randint(0,200)
-                if d <= 10:
-                    battle_scene(bg)
+                if para.map == 21:
+                    d = random.randint(0,200)
+                    if d <= 10:
+                        battle_scene(bg)
                 #print(para.pl_y,para.pl_x)
 
     if  key[pygame.K_a] == 1:
@@ -44,9 +46,10 @@ def move_player(y,x,bg): # 主人公の移動
 
                 para.is_move = True
                 para.move_delay = pygame.time.get_ticks() + para.move_delay_time
-                d = random.randint(0,200)
-                if d <= 10:
-                    battle_scene(bg)
+                if para.map == 21:
+                    d = random.randint(0,200)
+                    if d <= 10:
+                        battle_scene(bg)
                 #print(para.pl_y,para.pl_x)
 
     if key[pygame.K_d] == 1:
@@ -57,9 +60,10 @@ def move_player(y,x,bg): # 主人公の移動
 
                 para.is_move = True
                 para.move_delay = pygame.time.get_ticks() + para.move_delay_time
-                d = random.randint(0,200)
-                if d <= 10:
-                    battle_scene(bg)
+                if para.map == 21:
+                    d = random.randint(0,200)
+                    if d <= 10:
+                        battle_scene(bg)
                 #print(para.pl_y,para.pl_x)
     
     if para.is_move and pygame.time.get_ticks() > para.move_delay:
