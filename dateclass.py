@@ -19,6 +19,9 @@ class Date():
         with open("equip_status.json","r",encoding='utf-8') as f:
             equip_status = json.load(f)
 
+        with open("skilldate.json","r",encoding='utf-8') as f:
+            spell = json.load(f)
+
         
         self.mapdate = eval(rl[0].strip("\n")) #リスト型でマップ情報管理
         self.map = int(rl[1].strip("\n")) #マップを数字で管理
@@ -46,6 +49,7 @@ class Date():
         self.bag_item = defaultdict(lambda:0,item) #
         self.bag_equip = defaultdict(lambda:0,equip) #
         self.equip_status = defaultdict(lambda:[0,0],equip_status) #0番目が武器防具判定(0が武器,1が防具),1番目に上昇の値
+        self.skill_spell = defaultdict(lambda:["",0],spell) #0番目が属性,1番目が消費mp キーは呪文名
         #self.bag_equip = ast.literal_eval(rl[16].strip("\n"))
         #self.bag_equip = defaultdict(int)
 
@@ -78,6 +82,8 @@ class Date():
             json.dump(self.bag_equip,f,ensure_ascii=False,indent = 4)
         with open("equip_status.json","w",encoding='utf-8') as f:
             json.dump(self.equip_status,f,ensure_ascii=False,indent = 4)
+        with open("skilldate.json","w",encoding='utf-8') as f:
+            json.dump(self.skill_spell,f,ensure_ascii=False,indent = 4)
         #file.write(str(self.bag_item)+"\n")
         #file.write(str(self.bag_equip)+"\n")
         file.close()
@@ -108,11 +114,22 @@ class Date():
         self.bag_item = defaultdict(int)
         self.bag_equip = defaultdict(int)
         self.equip_status = defaultdict(lambda:[0,0])
+        self.skill_spell = defaultdict(lambda:["",0])
 
 class Battle():
     
     def __init__(self):
         self.status = 0 #戦闘での自ターン消費判定 0=何もしていない 1=道具使用など
 
+class skill():
+
+    def __init__(self):
+            
+        with open("spellmat.json","r",encoding='utf-8') as f:
+            self.spell_mat = json.load(f) #0番目がskill名,1番目が消費mp
+
+
+
 para = Date()
 judge = Battle()
+spellmenu = skill()

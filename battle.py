@@ -91,6 +91,8 @@ def draw_item(bg):
         text = font.render('{}               {} 個'.format(key,para.bag_item[key]),True,white)
         bg.blit(text,(5,255+point*23))
         point += 1
+    text = font.render("閉じる",True,white)
+    bg.blit(text,(5,255+point*23))
 
 def item_select(bg):
 
@@ -116,14 +118,14 @@ def item_select(bg):
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_s:
-                    if point < 3:
+                    if point < len(para.bag_item):
                         point += 1       
         
         key = pygame.key.get_pressed()
 
         if key[pygame.K_f] == 1:
             if not para.is_move:
-                if point == 2:
+                '''if point == 2:
                     para.is_move = True
                     para.move_delay = pygame.time.get_ticks() + para.move_delay_time
                     pygame.display.update()
@@ -136,6 +138,17 @@ def item_select(bg):
                     break
                 
                 if point == 1:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    use_item(bg,point)
+                    break'''
+                
+                if point == len(para.bag_item):
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    pygame.display.update()
+                    break
+                else:
                     para.is_move = True
                     para.move_delay = pygame.time.get_ticks() + para.move_delay_time
                     use_item(bg,point)
@@ -183,6 +196,180 @@ def use_item(bg,point):
         else:
             check += 1
             continue
+
+def draw_spell(bg):
+    
+    from dateclass import para
+    point = 0
+
+    for key in para.skill_spell.keys():
+        text = font.render('{}    {}'.format(key,para.skill_spell[key][1]),True,white)
+        bg.blit(text,(5,255+point*23))
+        point += 1
+    text = font.render("閉じる",True,white)
+    bg.blit(text,(5,255+point*23))
+
+def spell_select(bg):
+
+    from dateclass import para,judge
+    point = 0
+
+    while True:
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_w:
+                    if point >= 1:
+                        point -= 1
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_s:
+                    if point < len(para.skill_spell):
+                        point += 1       
+        
+        key = pygame.key.get_pressed()
+
+        if key[pygame.K_f] == 1:
+            if not para.is_move:
+                '''if point == 5:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    pygame.display.update()
+                    break
+                
+                if point == 0:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    use_spell(bg,point)
+                    break
+                
+                if point == 1:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    use_spell(bg,point)
+                    break
+
+                if point == 2:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    use_spell(bg,point)
+                    break
+
+                if point == 3:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    use_spell(bg,point)
+                    break
+
+                if point == 4:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    use_spell(bg,point)
+                    break'''
+                
+                if point == len(para.skill_spell):
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    pygame.display.update()
+                    break
+                else:
+                    para.is_move = True
+                    para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                    pygame.display.update()
+                    use_spell(bg,point)
+                    break
+                
+        
+        if para.is_move and pygame.time.get_ticks() > para.move_delay:
+            para.is_move = False
+
+
+        draw_skill_back(bg)
+        draw_spell(bg)
+
+        now = 255+point*23
+        pygame.draw.rect(bg,white,(5,now,240,23),width = 1,border_radius = 5)
+
+        pygame.display.update()
+
+def use_spell(bg,point):
+
+    check = 0
+
+    from dateclass import para,judge
+
+    for i in list(para.skill_spell.keys()):
+        if check == point:
+            if i == "ファイア":
+                if para.mp >= para.skill_spell[i][1]:
+                    para.mp -= para.skill_spell[i][1]
+                    judge.status = 1
+                    set_message("あなたは"+"{}".format(i)+"を唱えた!")
+                    set_message("80 ダメージ!")
+                else:
+                    set_message("mpが足りない!")
+            if i == "アイス":
+                if para.mp >= para.skill_spell[i][1]:
+                    para.mp -= para.skill_spell[i][1]
+                    judge.status = 1
+                    set_message("あなたは"+"{}".format(i)+"を唱えた!")
+                    set_message("80 ダメージ!")
+                else:
+                    set_message("mpが足りない!")
+            if i == "サンダー":
+                if para.mp >= para.skill_spell[i][1]:
+                    para.mp -= para.skill_spell[i][1]
+                    judge.status = 1
+                    set_message("あなたは"+"{}".format(i)+"を唱えた!")
+                    set_message("80 ダメージ!")
+                else:
+                    set_message("mpが足りない!")
+            if i == "ホーリー":
+                if para.mp >= para.skill_spell[i][1]:
+                    para.mp -= para.skill_spell[i][1]
+                    judge.status = 1
+                    set_message("あなたは"+"{}".format(i)+"を唱えた!")
+                    set_message("80 ダメージ!")
+                else:
+                    set_message("mpが足りない!")
+            if i == "ダーク":
+                if para.mp >= para.skill_spell[i][1]:
+                    para.mp -= para.skill_spell[i][1]
+                    judge.status = 1
+                    set_message("あなたは"+"{}".format(i)+"を唱えた!")
+                    set_message("80 ダメージ!")
+                else:
+                    set_message("mpが足りない!")
+            after_battle_msg(bg)
+            break
+        else:
+            check += 1
+            continue
+
+def check_spell_get():
+
+    from dateclass import para,spellmenu
+
+    for i in spellmenu.spell_mat.keys():
+        if para.lv == int(i):
+            para.skill_spell["{}".format(spellmenu.spell_mat[str(para.lv)][0])][1] = spellmenu.spell_mat[str(para.lv)][1]
+            print(i)
+
+def lv_up():
+
+    from dateclass import para
+
+    para.lv += 1
+    para.get_exp -= para.lv_up
+    para.lv_up *= 3
+    para.max_hp += 2
+    para.max_mp += 2
+    para.attack += 2
+    para.deffence += 2
 
 def battle_scene(bg):
 
@@ -281,13 +468,17 @@ def battle_scene(bg):
                     if ene_hp <= 0:
                         set_message("モンスターを倒した!")
                         set_message("{}経験値ゲットした!".format(exp))
-                        para.get_exp += exp
+                        para.get_exp += exp 
                         while para.get_exp >= para.lv_up:
-                            para.lv += 1
+                            lv_up()
+                            check_spell_get()
+                            '''para.lv += 1
                             para.get_exp -= para.lv_up
                             para.lv_up *= 3
+                            para.max_hp += 2
+                            para.max_mp += 2
                             para.attack += 2
-                            para.deffence += 2
+                            para.deffence += 2'''
                         after_battle_msg(bg)
                         time.sleep(2)
                         break
@@ -295,23 +486,51 @@ def battle_scene(bg):
                         idx += 1
                         timer = 0
                 if point == 1: #呪文
-                    set_message("{} ダメージ!".format(my_at))
-                    ene_hp -= my_at
-                    idx += 1
-                    timer = 0
-                    if ene_hp <= 0:
-                        set_message("モンスターを倒した!")
-                        set_message("{}経験値ゲットした!".format(exp))
-                        para.get_exp += exp
-                        while para.get_exp >= para.lv_up:
-                            para.lv += 1
-                            para.get_exp -= para.lv_up
-                            para.lv_up *= 3
-                            para.attack += 2
-                            para.deffence += 2
-                        after_battle_msg(bg)
-                        time.sleep(2)
-                        break
+                    if not para.is_move:
+                        para.is_move = True
+                        para.move_delay = pygame.time.get_ticks() + para.move_delay_time
+                        if len(para.skill_spell) != 0:
+                            spell_select(bg)
+                        '''if ene_hp <= 0:
+                            set_message("モンスターを倒した!")
+                            set_message("{}経験値ゲットした!".format(exp))
+                            para.get_exp += exp
+                            while para.get_exp >= para.lv_up:
+                                check_spell_get()
+                                para.lv += 1
+                                para.get_exp -= para.lv_up
+                                para.lv_up *= 3
+                                para.max_hp += 2
+                                para.max_mp += 2
+                                para.attack += 2
+                                para.deffence += 2
+                            after_battle_msg(bg)
+                            time.sleep(2)
+                            break'''
+                    if judge.status == 1:
+                        ene_hp -= 80
+                        if ene_hp <= 0:
+                            judge.status = 0
+                            set_message("モンスターを倒した!")
+                            set_message("{}経験値ゲットした!".format(exp))
+                            para.get_exp += exp
+                            while para.get_exp >= para.lv_up:
+                                lv_up()
+                                check_spell_get()
+                                '''para.lv += 1
+                                para.get_exp -= para.lv_up
+                                para.lv_up *= 3
+                                para.max_hp += 2
+                                para.max_mp += 2
+                                para.attack += 2
+                                para.deffence += 2'''
+                            after_battle_msg(bg)
+                            time.sleep(2)
+                            break
+                        else:
+                            idx += 1
+                            timer = 0
+                            judge.status = 0
                 if point == 2: #道具
                     if not para.is_move:
                         para.is_move = True
@@ -356,13 +575,16 @@ def battle_scene(bg):
         elif idx == 4: #敗北処理
             set_message("あなたは倒れてしまった...")
             after_battle_msg(bg)
+            para.map = 0
             time.sleep(2)
             break
         
         else:
             idx = 11
             timer = 0
-        
+
+        if point == 1:
+            draw_spell(bg)        
         if point == 2:
             draw_item(bg)
         
@@ -370,7 +592,7 @@ def battle_scene(bg):
 
         if para.is_move and pygame.time.get_ticks() > para.move_delay:
             para.is_move = False
-        
+
         pygame.display.update()
 
         clock.tick(60)
