@@ -13,11 +13,11 @@ font = pygame.font.Font('ipaexg00401/ipaexg.ttf', 20)
 backimg = pygame.image.load("backimg/battle_map1.jpg")
 slime = pygame.image.load("image/slime.png")
 
-def init_message():
+def init_message(): #メッセージリスト初期化
     for i in range(10):
         message[i] = ""
 
-def set_message(msg):
+def set_message(msg): #メッセージ追加
     for i in range(10):
         if message[i] == "":
             message[i] = msg
@@ -26,11 +26,11 @@ def set_message(msg):
         message[i] = message[i+1]
     message[9] = msg
 
-def draw_msg(bg,txt,x,y,fnt,col):
+def draw_msg(bg,txt,x,y,fnt,col): #メッセージを表記
     sur = fnt.render(txt,True,col)
     bg.blit(sur,[x+5,y+5])
 
-def draw_status_inbattle(bg):
+def draw_status_inbattle(bg): #戦闘中にステータスを表記
 
     from dateclass import para
 
@@ -51,12 +51,12 @@ def draw_status_inbattle(bg):
     text = font.render("MP  {} / {}".format(para.mp,para.max_mp),True,white)
     bg.blit(text,(40,675))
 
-def draw_msg_back(bg):
+def draw_msg_back(bg): #メッセージを表記する欄
 
     bg.fill(black,(0,0,250,250))
     pygame.draw.rect(bg,white,(0,0,250,250),width = 5,border_radius = 5)
 
-def battle_command(bg,point):
+def battle_command(bg,point): #戦闘コマンドを表記
 
     bg.fill(black,(200,520,520,200))
     pygame.draw.rect(bg,white,(200,520,520,200),width = 5,border_radius = 5)
@@ -70,19 +70,19 @@ def battle_command(bg,point):
     sur = font.render("逃げる",True,white)
     bg.blit(sur,[590,650])
 
-def after_battle_msg(bg):
+def after_battle_msg(bg): #戦闘終了時,メッセージを表記
 
     draw_msg_back(bg)
     for i in range(10):
         draw_msg(bg,message[i],0,24*i,font,white)
     pygame.display.update()
 
-def draw_skill_back(bg):
+def draw_skill_back(bg): #呪文を表記する欄
 
     bg.fill(black,(0,250,250,270))
     pygame.draw.rect(bg,white,(0,250,250,270),width = 5,border_radius = 5)
 
-def draw_item(bg):
+def draw_item(bg): #戦闘中,所持アイテムを表記
     
     from dateclass import para
     point = 0
@@ -94,7 +94,7 @@ def draw_item(bg):
     text = font.render("閉じる",True,white)
     bg.blit(text,(5,255+point*23))
 
-def item_select(bg):
+def item_select(bg): #戦闘中,アイテムを選択
 
     '''draw_item(bg)
     draw_msg_back(bg)
@@ -166,7 +166,7 @@ def item_select(bg):
 
         pygame.display.update()
 
-def use_item(bg,point):
+def use_item(bg,point): #戦闘中,アイテムを使用
 
     check = 0
 
@@ -197,7 +197,7 @@ def use_item(bg,point):
             check += 1
             continue
 
-def draw_spell(bg):
+def draw_spell(bg): #戦闘中,使用可能呪文を表記
     
     from dateclass import para
     point = 0
@@ -209,7 +209,7 @@ def draw_spell(bg):
     text = font.render("閉じる",True,white)
     bg.blit(text,(5,255+point*23))
 
-def spell_select(bg):
+def spell_select(bg): #戦闘中,呪文を選択
 
     from dateclass import para,judge
     point = 0
@@ -296,7 +296,7 @@ def spell_select(bg):
 
         pygame.display.update()
 
-def use_spell(bg,point):
+def use_spell(bg,point): #戦闘中,呪文を使用
 
     check = 0
 
@@ -350,7 +350,7 @@ def use_spell(bg,point):
             check += 1
             continue
 
-def check_spell_get():
+def check_spell_get(): #レベルアップ時,呪文を覚えるか判定
 
     from dateclass import para,spellmenu
 
@@ -359,7 +359,7 @@ def check_spell_get():
             para.skill_spell["{}".format(spellmenu.spell_mat[str(para.lv)][0])][1] = spellmenu.spell_mat[str(para.lv)][1]
             print(i)
 
-def lv_up():
+def lv_up(): #レベルアップ処理
 
     from dateclass import para
 
@@ -371,7 +371,7 @@ def lv_up():
     para.attack += 2
     para.deffence += 2
 
-def battle_scene(bg):
+def battle_scene(bg): #戦闘メイン描写
 
     from dateclass import para,judge
 

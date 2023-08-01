@@ -88,13 +88,13 @@ class Date():
         #file.write(str(self.bag_equip)+"\n")
         file.close()
     
-    def new_start(self):
+    def new_start(self): #初期値
 
-        self.mapdate = [] #リスト型でマップ情報管理
-        self.map = 10 #マップを数字で管理
-        self.pl_x = 15 #x座標
-        self.pl_y = 12 #y座標
-        self.direction = 2 #主人公の方向を管理 12時の方向から時計回りに0,1,2,3
+        self.mapdate = [] 
+        self.map = 10 
+        self.pl_x = 15 
+        self.pl_y = 12 
+        self.direction = 2 
         self.is_move = False
         self.move_delay = 0
         self.move_delay_time = 150
@@ -105,7 +105,7 @@ class Date():
         self.attack = 5
         self.deffence = 5
         self.money = 100
-        self.weapon = [0,""] #0番目が武器防具装着(0が非装着,1が装着),1番目に装備品名
+        self.weapon = [0,""] 
         self.armor = [0,""]
         self.lv = 1
         self.lv_up = 150
@@ -116,7 +116,7 @@ class Date():
         self.equip_status = defaultdict(lambda:[0,0])
         self.skill_spell = defaultdict(lambda:["",0])
 
-class Battle():
+class Battle(): #呪文,道具を使ったかを判定する
     
     def __init__(self):
         self.status = 0 #戦闘での自ターン消費判定 0=何もしていない 1=道具使用など
@@ -126,7 +126,7 @@ class skill():
     def __init__(self):
             
         with open("spellmat.json","r",encoding='utf-8') as f:
-            self.spell_mat = json.load(f) #0番目がskill名,1番目が消費mp
+            self.spell_mat = json.load(f) #0番目がskill名,1番目が消費mp キーはレベル
 
 
 
