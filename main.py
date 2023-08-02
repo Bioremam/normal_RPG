@@ -31,7 +31,7 @@ def main():
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
-        
+
         if para.map == 0:
             start_menu(screen)
 
